@@ -1,0 +1,13 @@
+
+DataSet dsJobDetails = adapterJobEntry.GetData(jobN);                       
+                           
+DataRow dr = adapterJobEntry.JobEntryData.JobHead.Rows[0];
+
+dr.BeginEdit(); 
+dr["ShortfallJobNum_c"] = NewJobNumber; 
+dr.EndEdit(); 
+
+if (adapterJobEntry.Update()) 
+{ 
+      EpiMessageBox.Show("Successful update!");
+}
