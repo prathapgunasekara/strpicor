@@ -1,13 +1,18 @@
 
+JobEntryAdapter adapterJobEntry = new JobEntryAdapter(this.oTrans);
+adapterJobEntry.BOConnect();
+    
 DataSet dsJobDetails = adapterJobEntry.GetData(jobNum);                       
                            
 DataRow dr = adapterJobEntry.JobEntryData.JobHead.Rows[0];
 
 dr.BeginEdit(); 
-dr["FieldName_c"] = NewJobNumber; 
+dr["FieldName_c"] = newValue; 
 dr.EndEdit(); 
 
 if (adapterJobEntry.Update()) 
 { 
       EpiMessageBox.Show("Successfully updated");
 }
+
+adapterJobEntry.Dispose();
