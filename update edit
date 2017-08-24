@@ -1,0 +1,21 @@
+
+			CustomerAdapter adapterCustomer = new CustomerAdapter(this.oTrans);
+			adapterCustomer.BOConnect();
+//
+      
+      string whereClause = @"CustId = 'W0001'" ;
+			System.Collections.Hashtable whereClauses = new System.Collections.Hashtable(1);
+			whereClauses.Add("Customer", whereClause);
+		
+			SearchOptions searchOptions = SearchOptions.CreateRuntimeSearch(whereClauses, DataSetMode.RowsDataSet);
+			adapterCustomer.InvokeSearch(searchOptions);
+	
+			var dr = adapterCustomer.CustomerData.Customer.Rows[0];
+	
+			dr.BeginEdit();
+			dr["Name"] = "Test C"; //Warrenty Industries (M) SDN. BHD
+			dr.EndEdit();
+	
+			adapterCustomer.Update();
+
+			adapterCustomer.Dispose();
