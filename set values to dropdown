@@ -1,0 +1,21 @@
+CustomerAdapter adapterCustomer = new CustomerAdapter(this.oTrans);
+		adapterCustomer.BOConnect();
+		
+		string whereClause = "";
+		System.Collections.Hashtable whereClauses = new System.Collections.Hashtable(1);
+		whereClauses.Add("Customer", whereClause);
+		
+		
+		SearchOptions searchOptions = SearchOptions.CreateRuntimeSearch(whereClauses, DataSetMode.RowsDataSet);
+		adapterCustomer.InvokeSearch(searchOptions);
+
+		var result = adapterCustomer.CustomerData.Customer;
+		
+		adapterCustomer.Dispose();
+
+		cboTest1.DataSource = result;
+
+        this.cmbCust1.ValueMember = "CustID";
+        this.cmbCust1.DisplayMember = "Name";
+		string[] fields = new string[] {"Name"};
+        this.cmbCust1.SetColumnFilter(fields);
