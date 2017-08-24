@@ -1,0 +1,31 @@
+private void CallUserCodesAdapterGetListMethod()
+{
+	try
+	{
+		// Declare and Initialize EpiDataView Variables
+		// Declare and create an instance of the Adapter.
+		UserCodesAdapter adapterUserCodes = new UserCodesAdapter(this.oTrans);
+		adapterUserCodes.BOConnect();
+
+		// Build where clause for search.
+		string whereClause = "CodeID = \'1\'";
+		System.Collections.Hashtable whereClauses = new System.Collections.Hashtable(1);
+		whereClauses.Add("UDCodes", whereClause);
+		
+		// Call the adapter search.
+		SearchOptions searchOptions = SearchOptions.CreateRuntimeSearch(whereClauses, DataSetMode.RowsDataSet);
+		adapterUserCodes.InvokeSearch(searchOptions);
+
+		//Or Call Adapter method-----------------------------------------------------------------------
+		//System.Boolean morePages;
+		//System.Data.DataSet dsUserCodes = adapterUserCodes.GetRows(searchOptions, out morePages);
+		//-------------------------------------------------------------------------------------------
+		
+		// Cleanup Adapter Reference
+		adapterUserCodes.Dispose();
+
+	} catch (System.Exception ex)
+	{
+		ExceptionBox.Show(ex);
+	}
+}
