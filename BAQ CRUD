@@ -1,0 +1,60 @@
+// Add a reference to "Ice.Contracts.Bo.DynamicQuery"
+
+public struct BaqParam
+{
+	public BaqParam(string paramName, string paramType, string paramValue)
+	{
+		this.ParamName = paramName;
+		this.ParamType = paramType;
+		this.ParamValue = paramValue;
+	}
+
+	public String ParamName;
+	public String ParamType;
+	public String ParamValue;
+}
+
+public DataTable getDataFromBAQ(String BaqID, ArrayList BaqParams)
+{
+	DataTable tbToReturn = new DataTable();
+	DynamicQueryAdapter adQuery = new DynamicQueryAdapter(oTrans);
+	adQuery.BOConnect();
+	QueryExecutionDataSet ds = new QueryExecutionDataSet();
+
+	foreach (BaqParam Param in BaqParams){
+		ds.ExecutionParameter.AddExecutionParameterRow(Param.ParamName, //Name of the Parameter
+		Param.ParamValue, // Value of the Parameter
+		Param.ParamType,  //Type of the Parameter
+		false,
+		new Guid(), 
+		"A"); 
+	}
+
+	adQuery.ExecuteByID(BaqID, ds);
+	tbToReturn = adQuery.QueryResults.Tables[0];
+	adQuery.Dispose();
+	return tbToReturn;
+}
+
+public void MethodThatRequiresDataFromBAQ()
+{
+	try
+	{
+		ArrayList Params = new ArrayList(){
+		    new BaqParam("BAQParameterName", "nvarchar", ((Ice.Core.Session)(PartForm.Session)).UserID.ToString())
+		};
+
+		DataTable dtData = getDataFromBAQ("YourBAQName", Params);
+
+		this.cmbNewPartMainClass.DataSource = dtData;
+		this.cmbNewPartMainClass.ValueMember = "ValueFieldName";
+		this.cmbNewPartMainClass.DisplayMember = "DisplayFieldName";
+		string[] fields = new string[] {"DisplayFieldName"};
+
+		this.cmbNewPartMainClass.SetColumnFilter(fields);
+	}
+	catch (Exception Ex)
+	{
+		throw new Exception(Ex.Message);
+	}
+ }
